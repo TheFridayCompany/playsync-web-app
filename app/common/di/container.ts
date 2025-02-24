@@ -13,6 +13,7 @@ import FirebaseAuthGateway from "@/app/features/auth/infra/firebase-auth.wrapper
 import { SYMBOLS } from "./symbols";
 
 const container = new Container();
+
 // infra layer
 container.bind<IAuthApiGateway>(SYMBOLS.IAuthApiGateway).to(AuthApi);
 container.bind<IAuthGateway>(SYMBOLS.IAuthGateway).to(FirebaseAuthGateway);

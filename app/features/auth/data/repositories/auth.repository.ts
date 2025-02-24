@@ -1,4 +1,3 @@
-"reflect metadata";
 import { inject, injectable } from "inversify";
 import { AuthUser } from "../../domain/entities/auth-user.entity";
 import IAuthRepository from "../../domain/interfaces/auth.repository.interface";
