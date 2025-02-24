@@ -1,9 +1,13 @@
 import { AuthUser } from "../entities/auth-user.entity";
 import IAuthRepository from "../interfaces/auth.repository.interface";
 import IAuthService from "../interfaces/auth.service.interface";
+import ITokenPersistenceRepository from "../interfaces/token-persistence.repository.interface";
 
 export default class AuthService implements IAuthService {
-  constructor(private readonly authRepository: IAuthRepository) {}
+  constructor(
+    private readonly authRepository: IAuthRepository,
+    private readonly tokenPersistenceRepository: ITokenPersistenceRepository
+  ) {}
 
   getCurrentUser(): Promise<AuthUser | null> {
     return this.authRepository.getCurrentUser();
@@ -23,10 +27,15 @@ export default class AuthService implements IAuthService {
     console.log("exchange token: ");
     console.log(tokenExchange);
 
+    await this.tokenPersistenceRepository.saveToken(tokenExchange);
+
     return authUser;
   }
 
   async logout(): Promise<void> {
-    await this.authRepository.signOut();
+    await Promise.all([
+      this.authRepository.signOut(),
+      this.tokenPersistenceRepository.clearToken(),
+    ]);
   }
 }

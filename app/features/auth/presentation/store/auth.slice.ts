@@ -15,7 +15,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     // Action to log the user in
-    login: (state, _) => {
+    login: (state) => {
       state.isLoggedIn = true;
     },
     // Action to log the user out

@@ -5,9 +5,11 @@ import AuthRepository from "../../data/repositories/auth.repository";
 import FirebaseAuthGateway from "../../infra/firebase-auth.wrapper";
 import AuthApi from "../../data/api/auth.api";
 import { login, logout } from "../store/auth.slice";
+import LocalStorageTokenPersistenceRepository from "../../data/repositories/token-persistence.repository";
 
 const authService = new AuthService(
-  new AuthRepository(new FirebaseAuthGateway(), new AuthApi())
+  new AuthRepository(new FirebaseAuthGateway(), new AuthApi()),
+  new LocalStorageTokenPersistenceRepository()
 );
 
 const useAuth = () => {
@@ -20,7 +22,7 @@ const useAuth = () => {
       try {
         const firebaseUser = await authService.getCurrentUser();
         if (firebaseUser) {
-          dispatch(login(firebaseUser)); // If user is authenticated, update Redux state
+          dispatch(login()); // If user is authenticated, update Redux state
         } else {
           dispatch(logout()); // If no user, set logged out state
         }
@@ -38,8 +40,8 @@ const useAuth = () => {
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
-      const loggedInUser = await authService.login();
-      dispatch(login(loggedInUser)); // Dispatch the login action with the user
+      await authService.login();
+      dispatch(login()); // Dispatch the login action with the user
     } catch (error) {
       console.error("Error during Google sign-in:", error);
     } finally {
