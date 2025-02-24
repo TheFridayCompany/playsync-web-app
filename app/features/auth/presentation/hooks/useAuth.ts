@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AuthService from "../../domain/services/auth.service";
-import AuthRepository from "../../data/repositories/auth.repository";
-import FirebaseAuthGateway from "../../infra/firebase-auth.wrapper";
-import AuthApi from "../../data/api/auth.api";
 import { login, logout } from "../store/auth.slice";
-import LocalStorageTokenPersistenceRepository from "../../data/repositories/token-persistence.repository";
-
-const authService = new AuthService(
-  new AuthRepository(new FirebaseAuthGateway(), new AuthApi()),
-  new LocalStorageTokenPersistenceRepository()
-);
+import { container } from "@/app/common/di/container";
+import IAuthService from "../../domain/interfaces/auth.service.interface";
+import { SYMBOLS } from "@/app/common/di/symbols";
 
 const useAuth = () => {
+  const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state: any) => state.auth);
   const [loading, setLoading] = useState<boolean>(true);

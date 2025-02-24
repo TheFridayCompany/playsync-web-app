@@ -1,5 +1,7 @@
+import { injectable } from "inversify";
 import ITokenPersistenceRepository from "../../domain/interfaces/token-persistence.repository.interface";
 
+@injectable()
 export default class LocalStorageTokenPersistenceRepository
   implements ITokenPersistenceRepository
 {

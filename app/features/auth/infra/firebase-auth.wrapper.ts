@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import IAuthGateway from "../data/interfaces/auth.gateway.interface";
 import { AuthUser } from "../domain/entities/auth-user.entity";
 import { initializeApp } from "firebase/app";
@@ -9,6 +10,7 @@ import {
   User,
 } from "firebase/auth";
 
+@injectable()
 export default class FirebaseAuthGateway implements IAuthGateway {
   private readonly auth: Auth;
 
