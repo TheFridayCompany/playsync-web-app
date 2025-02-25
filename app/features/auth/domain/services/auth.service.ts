@@ -13,30 +13,46 @@ export default class AuthService implements IAuthService {
     private _tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
-  getCurrentUser(): Promise<AuthUser | null> {
-    return this._authRepository.getCurrentUser();
-  }
-
-  async login(): Promise<AuthUser> {
-    const authUser = await this._authRepository.signInWithGoogle();
-
-    if (!authUser) {
-      throw new Error("Google login failed");
-    }
-
-    const tokenExchange = await this._authRepository.exchangeToken(
-      authUser?.authToken
-    );
+  private async exchangeAndSaveToken(socialToken: string) {
+    const tokenExchange = await this._authRepository.exchangeToken(socialToken);
 
     console.log("exchange token: ");
     console.log(tokenExchange);
 
     await this._tokenPersistenceRepository.saveToken(tokenExchange);
+  }
 
-    return authUser;
+  async restoreLogin(): Promise<AuthUser | null> {
+    console.log("[auth.service] restore login called");
+
+    const currentUser = await this.getCurrentUser();
+
+    if (!currentUser) return null;
+
+    await this.exchangeAndSaveToken(currentUser.authToken);
+
+    return currentUser;
+  }
+
+  getCurrentUser(): Promise<AuthUser | null> {
+    return this._authRepository.getCurrentUser();
+  }
+
+  async login(): Promise<AuthUser> {
+    console.log("[auth.service] login called");
+
+    const currentUser = await this._authRepository.signInWithGoogle();
+
+    if (!currentUser) throw new Error("Google sign in failed");
+
+    await this.exchangeAndSaveToken(currentUser.authToken);
+
+    return currentUser;
   }
 
   async logout(): Promise<void> {
+    console.log("[auth.service] logout called");
+
     await Promise.all([
       this._authRepository.signOut(),
       this._tokenPersistenceRepository.clearToken(),

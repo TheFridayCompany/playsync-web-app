@@ -1,4 +1,5 @@
 export const SYMBOLS = {
+  // AUTH
   IAuthRepository: Symbol.for("IAuthRepository"),
   ITokenPersistenceRepository: Symbol.for("ITokenPersistenceRepository"),
 
@@ -6,4 +7,7 @@ export const SYMBOLS = {
   IAuthApiGateway: Symbol.for("IAuthApiGateway"),
 
   IAuthService: Symbol.for("IAuthService"),
+
+  // PROFILE
+  IProfileService: Symbol.for("IProfileService"),
 };

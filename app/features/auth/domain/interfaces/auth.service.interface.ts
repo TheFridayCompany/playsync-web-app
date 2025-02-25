@@ -26,4 +26,13 @@ export default interface IAuthService {
    * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if a user is authenticated, or `null` if no user is logged in.
    */
   getCurrentUser(): Promise<AuthUser | null>;
+
+  /**
+   * Attempts to restore the previous login session.
+   * This method can check for persisted login information (e.g., token, session) and
+   * restore the authentication state if a valid session exists.
+   *
+   * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if a valid session is found, or `null` if no session exists or the session is invalid.
+   */
+  restoreLogin(): Promise<AuthUser | null>;
 }
