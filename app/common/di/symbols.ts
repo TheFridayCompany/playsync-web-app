@@ -10,4 +10,6 @@ export const SYMBOLS = {
 
   // PROFILE
   IProfileService: Symbol.for("IProfileService"),
+  IProfileRepository: Symbol.for("IProfileRepository"),
+  IProfileApi: Symbol.for("IProfileApi"),
 };

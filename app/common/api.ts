@@ -15,10 +15,18 @@ const axiosInstance = axios.create({
 // Wrapper function for GET request
 export const get = async <T>(
   url: string,
+  authToken: string | null = null, // Added authToken parameter
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response: AxiosResponse<T> = await axiosInstance.get(url, config);
+    const headers = authToken
+      ? { ...config?.headers, Authorization: `Bearer ${authToken}` }
+      : config?.headers;
+
+    const response: AxiosResponse<T> = await axiosInstance.get(url, {
+      ...config,
+      headers,
+    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -30,7 +38,7 @@ export const get = async <T>(
 export const post = async <T>(
   url: string,
   data: object,
-  authToken: string | null,
+  authToken: string | null = null, // Added authToken parameter
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
@@ -53,14 +61,18 @@ export const post = async <T>(
 export const patch = async <T>(
   url: string,
   data: object,
+  authToken: string | null = null, // Added authToken parameter
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response: AxiosResponse<T> = await axiosInstance.patch(
-      url,
-      data,
-      config
-    );
+    const headers = authToken
+      ? { ...config?.headers, Authorization: `Bearer ${authToken}` }
+      : config?.headers;
+
+    const response: AxiosResponse<T> = await axiosInstance.patch(url, data, {
+      ...config,
+      headers,
+    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -71,10 +83,18 @@ export const patch = async <T>(
 // Wrapper function for DELETE request
 export const del = async <T>(
   url: string,
+  authToken: string | null = null, // Added authToken parameter
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response: AxiosResponse<T> = await axiosInstance.delete(url, config);
+    const headers = authToken
+      ? { ...config?.headers, Authorization: `Bearer ${authToken}` }
+      : config?.headers;
+
+    const response: AxiosResponse<T> = await axiosInstance.delete(url, {
+      ...config,
+      headers,
+    });
     return response.data;
   } catch (error) {
     handleError(error);

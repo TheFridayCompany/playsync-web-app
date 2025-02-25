@@ -24,7 +24,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
       {/* Right: Profile/Logout options */}
       <div className="flex items-center space-x-6">
         {!isLoading && profile && (
-          <div className="text-lg">{JSON.stringify(profile?.username)}</div>
+          <div className="text-lg">{profile.username}</div>
         )}
         <button className="text-green-400" onClick={onLogout}>
           Logout

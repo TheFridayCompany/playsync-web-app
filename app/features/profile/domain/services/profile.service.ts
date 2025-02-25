@@ -1,23 +1,26 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { User } from "../entities/user.entity";
 import IProfileService from "../interfaces/profile.service.interface";
+import { SYMBOLS } from "@/app/common/di/symbols";
+import type IProfileRepository from "../interfaces/profile.repository.interface";
 
 @injectable()
 export default class ProfileService implements IProfileService {
-  async createProfile(
-    email: string,
-    username: string,
-    name: string
-  ): Promise<User> {
-    return new User("", name, username, email);
+  constructor(
+    @inject(SYMBOLS.IProfileRepository)
+    private readonly profileRepository: IProfileRepository
+  ) {}
+
+  async createProfile(username: string, name: string): Promise<User> {
+    return this.profileRepository.createProfile(username, name);
   }
 
-  async deleteProfile(id: string): Promise<void> {
-    // throw new Error("Method not implemented.");
+  async deleteProfile(): Promise<void> {
+    return this.profileRepository.deleteProfile();
   }
 
   async getProfile(): Promise<User> {
     console.log("[profile.service] get profile called");
-    return new User("", "test", "test123", "test123@test.com");
+    return this.profileRepository.getProfile();
   }
 }

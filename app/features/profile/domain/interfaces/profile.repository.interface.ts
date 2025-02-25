@@ -3,7 +3,7 @@ import { User } from "../entities/user.entity";
 /**
  * Interface for managing user profiles.
  */
-export default interface IProfileService {
+export default interface IProfileRepository {
   /**
    * Creates a new user profile.
    * @param {string} username - The username chosen by the user.
