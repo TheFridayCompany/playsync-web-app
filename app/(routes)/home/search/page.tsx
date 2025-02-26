@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { useSongs } from "@/app/features/song/presentation/hooks/useSongs";
-import SongsList from "@/app/features/song/presentation/components/SongsList";
+import EnhancedSongCard from "@/app/features/song/presentation/components/EnhancedSongCard";
+import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
 
 export default function Search() {
   const { songSearch, songs, loading } = useSongs();
+  const { addSong } = usePlaylists();
+
   const [query, setQuery] = useState(""); // State to manage the input value
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -31,7 +34,19 @@ export default function Search() {
         </button>
       </form>
 
-      {loading ? <p>Loading...</p> : <SongsList songs={songs} />}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="space-y-4">
+          {songs.map((song) => (
+            <EnhancedSongCard
+              key={song.id}
+              song={song}
+              onAddToPlaylist={addSong}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

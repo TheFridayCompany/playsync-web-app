@@ -7,6 +7,8 @@ import IPlaylistsRepository from "@/app/features/playlist/domain/interfaces/play
 import PlaylistsRepository from "@/app/features/playlist/data/repositories/playlist.repository";
 import IPlaylistService from "@/app/features/playlist/domain/interfaces/playlist.service.interface";
 import PlaylistService from "@/app/features/playlist/domain/services/playlist.service";
+import IPlaylistSongsService from "@/app/features/playlist/domain/interfaces/playlist-song.service.interface";
+import PlayListSongsService from "@/app/features/playlist/domain/services/playlist-song.service";
 
 const playlistsModule = new ContainerModule((bind) => {
   // data layer
@@ -18,6 +20,9 @@ const playlistsModule = new ContainerModule((bind) => {
 
   // domain layer
   bind<IPlaylistService>(SYMBOLS.IPlaylistService).to(PlaylistService);
+  bind<IPlaylistSongsService>(SYMBOLS.IPlaylistSongsService).to(
+    PlayListSongsService
+  );
 });
 
 export { playlistsModule };

@@ -34,4 +34,8 @@ export default interface IPlaylistsRepository {
    * @returns {Promise<Playlist>} A promise that resolves to the playlist with the given ID.
    */
   getPlaylist(id: string): Promise<Playlist>;
+
+  addSong(id: string, songId: string): Promise<Playlist>;
+
+  removeSong(id: string, songId: string): Promise<Playlist>;
 }

@@ -13,6 +13,16 @@ export default class PlaylistsRepository implements IPlaylistsRepository {
     private readonly tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
+  async addSong(id: string, songId: string): Promise<Playlist> {
+    const token = await this.getToken();
+    return this.playlistApi.addSong(id, songId, token);
+  }
+
+  async removeSong(id: string, songId: string): Promise<Playlist> {
+    const token = await this.getToken();
+    return this.playlistApi.removeSong(id, songId, token);
+  }
+
   private async getToken(): Promise<string> {
     const token = await this.tokenPersistenceRepository.getToken();
     if (!token) throw new Error("Could not find JWT token");

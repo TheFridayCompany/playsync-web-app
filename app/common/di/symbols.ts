@@ -15,6 +15,7 @@ export const SYMBOLS = {
 
   // PLAYLISTS
   IPlaylistService: Symbol.for("IPlaylistService"),
+  IPlaylistSongsService: Symbol.for("IPlaylistSongsService"),
   IPlaylistRepository: Symbol.for("IPlaylistRepository"),
   IPlaylistApi: Symbol.for("IPlaylistApi"),
 

@@ -2,7 +2,7 @@ import { container } from "@/app/common/di/container";
 import { useDispatch, useSelector } from "react-redux";
 import IPlaylistService from "../../domain/interfaces/playlist.service.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   addPlaylist,
   removePlaylist,
@@ -10,15 +10,27 @@ import {
   updatePlaylist,
 } from "../store/playlists.slice";
 import CreatePlaylistDto from "../../domain/dto/create-playlist.dto";
+import IPlaylistSongService from "../../domain/interfaces/playlist-song.service.interface";
 
 const usePlaylists = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const { playlists } = useSelector((state: any) => state.playlists);
+  const { profile } = useSelector((state: any) => state.profile);
 
   const playlistsService = container.get<IPlaylistService>(
     SYMBOLS.IPlaylistService
   );
+
+  const playlistSongsService = container.get<IPlaylistSongService>(
+    SYMBOLS.IPlaylistSongsService
+  );
+
+  useEffect(() => {
+    if (profile) {
+      fetchPlaylists();
+    }
+  }, [profile]);
 
   const fetchPlaylists = async () => {
     setLoading(true);
@@ -63,7 +75,33 @@ const usePlaylists = () => {
       console.error("Error deleting playlist:", error);
     }
   };
-  return { playlists, loading, fetchPlaylists, createPlaylist, deletePlaylist };
+
+  const addSong = async (id: string, songId: string) => {
+    try {
+      const playlist = await playlistSongsService.addSong(id, songId);
+      dispatch(updatePlaylist({ id: id, updatedPlaylist: playlist }));
+    } catch (error) {
+      console.error("Error deleting playlist:", error);
+    }
+  };
+
+  const removeSong = async (id: string, songId: string) => {
+    try {
+      const playlist = await playlistSongsService.removeSong(id, songId);
+      dispatch(updatePlaylist({ id: id, updatedPlaylist: playlist }));
+    } catch (error) {
+      console.error("Error deleting playlist:", error);
+    }
+  };
+
+  return {
+    playlists,
+    loading,
+    createPlaylist,
+    deletePlaylist,
+    addSong,
+    removeSong,
+  };
 };
 
 export default usePlaylists;

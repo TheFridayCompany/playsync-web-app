@@ -1,9 +1,18 @@
 import { injectable } from "inversify";
 import IPlaylistsApi from "../interfaces/playlists.api.interface";
 import { del, get, post } from "@/app/common/api";
+import Playlist from "../../domain/entities/playlist.entity";
 
 @injectable()
 export default class PlaylistsApi implements IPlaylistsApi {
+  addSong(id: string, songId: string, authToken: string): Promise<Playlist> {
+    return post(`/playlists/${id}/song/${songId}`, {}, authToken, {});
+  }
+
+  removeSong(id: string, songId: string, authToken: string): Promise<Playlist> {
+    return del(`/playlists/${id}/song/${songId}`, authToken);
+  }
+
   async getPlaylists(authToken?: string): Promise<any> {
     return get("/playlists", authToken);
   }
@@ -13,8 +22,6 @@ export default class PlaylistsApi implements IPlaylistsApi {
   }
 
   async createPlaylist(data: object, authToken?: string): Promise<any> {
-    console.log(JSON.stringify(data));
-
     return post("/playlists", data, authToken);
   }
 

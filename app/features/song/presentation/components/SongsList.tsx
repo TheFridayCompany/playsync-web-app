@@ -1,13 +1,14 @@
+import { ReactNode } from "react";
 import Artist from "../../domain/entities/artist.entity";
 import Song from "../../domain/entities/song.entity";
 import { StreamingPlatforms } from "../../domain/entities/streaming-platforms.enum";
-// Component for displaying the song details
+
 interface SongCardProps {
   song: Song;
+  children?: ReactNode; // Accept children for custom actions
 }
 
-const SongCard: React.FC<SongCardProps> = ({ song }) => {
-  // Function to format the duration from milliseconds to minutes and seconds
+const SongCard: React.FC<SongCardProps> = ({ song, children }) => {
   const formatDuration = (durationMs: number) => {
     const minutes = Math.floor(durationMs / 60000);
     const seconds = ((durationMs % 60000) / 1000).toFixed(0);
@@ -15,7 +16,10 @@ const SongCard: React.FC<SongCardProps> = ({ song }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 w-full max-w-sm">
+    <div className="relative bg-white shadow-md rounded-lg p-4 border border-gray-200 w-full max-w-sm">
+      {/* Injected Children (e.g., Options Button) */}
+      {children && <div className="absolute top-3 right-3">{children}</div>}
+
       <h3 className="text-xl font-semibold text-gray-900">{song.name}</h3>
       <div className="text-sm text-gray-600">
         <p>Duration: {formatDuration(song.duration_ms)}</p>
@@ -52,6 +56,7 @@ const SongCard: React.FC<SongCardProps> = ({ song }) => {
 
 interface SongsListProps {
   songs: Song[];
+  // onAddToPlaylist: (songId: string, playlistId: string) => void;
 }
 
 const SongsList: React.FC<SongsListProps> = ({ songs }) => {
@@ -64,4 +69,4 @@ const SongsList: React.FC<SongsListProps> = ({ songs }) => {
   );
 };
 
-export default SongsList;
+export { SongsList, SongCard };

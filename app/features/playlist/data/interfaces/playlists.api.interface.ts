@@ -1,3 +1,5 @@
+import Playlist from "../../domain/entities/playlist.entity";
+
 /**
  * Interface for interacting with the Playlists API.
  * Provides methods to create, delete, and retrieve playlists.
@@ -33,4 +35,8 @@ export default interface IPlaylistsApi {
    * @returns A promise resolving to the delete confirmation.
    */
   deletePlaylist(id: string, authToken: string): Promise<any>;
+
+  addSong(id: string, songId: string, authToken: string): Promise<Playlist>;
+
+  removeSong(id: string, songId: string, authToken: string): Promise<Playlist>;
 }

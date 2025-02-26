@@ -2,22 +2,14 @@
 
 import PlaylistList from "@/app/features/playlist/presentation/components/PlaylistList";
 import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreatePlaylistModal from "@/app/features/playlist/presentation/components/CreatePlaylistModal";
 import { useSelector } from "react-redux";
 
 export default function Playlists() {
-  const { fetchPlaylists, loading, playlists, createPlaylist, deletePlaylist } =
-    usePlaylists();
+  const { loading, playlists, createPlaylist, deletePlaylist } = usePlaylists();
   const { profile } = useSelector((state: any) => state.profile);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  console.log("printing profile");
-  console.log(JSON.stringify(profile));
-
-  useEffect(() => {
-    fetchPlaylists();
-  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
