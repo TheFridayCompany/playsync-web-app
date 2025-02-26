@@ -23,6 +23,7 @@ export default class ProfileRepository implements IProfileRepository {
   async createProfile(username: string, name: string): Promise<User> {
     const token = await this.getToken();
 
+    // TODO: pass email
     const user = await this.profileApi.create(username, name, token);
     return user;
   }

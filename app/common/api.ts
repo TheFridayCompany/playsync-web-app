@@ -16,7 +16,8 @@ const axiosInstance = axios.create({
 export const get = async <T>(
   url: string,
   authToken: string | null = null, // Added authToken parameter
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
+  queryParams?: Record<string, any> // Add queryParams as an optional parameter
 ): Promise<T> => {
   try {
     const headers = authToken
@@ -26,6 +27,7 @@ export const get = async <T>(
     const response: AxiosResponse<T> = await axiosInstance.get(url, {
       ...config,
       headers,
+      params: queryParams, // Pass queryParams as the 'params' in the Axios request
     });
     return response.data;
   } catch (error) {

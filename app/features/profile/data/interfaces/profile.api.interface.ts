@@ -4,13 +4,11 @@ export default interface IProfileApi {
   /**
    * Creates a new profile with the specified email, username, and name.
    *
-   * @param email - The email of the user.
    * @param username - The username of the user.
    * @param name - The full name of the user.
    * @returns A promise that resolves when the profile is created.
    */
   create(
-    email: string,
     username: string,
     name: string,
     token: string
