@@ -10,6 +10,7 @@ export default interface IProfileApi {
    * @returns A promise that resolves when the profile is created.
    */
   create(
+    email: string,
     username: string,
     name: string,
     token: string

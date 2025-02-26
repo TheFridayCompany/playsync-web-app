@@ -58,5 +58,5 @@ export function useProfile() {
     }
   };
 
-  return { checkAndSetProfile };
+  return { checkAndSetProfile, profile };
 }

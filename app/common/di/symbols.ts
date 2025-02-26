@@ -12,4 +12,9 @@ export const SYMBOLS = {
   IProfileService: Symbol.for("IProfileService"),
   IProfileRepository: Symbol.for("IProfileRepository"),
   IProfileApi: Symbol.for("IProfileApi"),
+
+  // PLAYLISTS
+  IPlaylistService: Symbol.for("IPlaylistService"),
+  IPlaylistRepository: Symbol.for("IPlaylistRepository"),
+  IPlaylistApi: Symbol.for("IPlaylistApi"),
 };

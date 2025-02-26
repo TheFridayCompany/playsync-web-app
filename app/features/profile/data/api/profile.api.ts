@@ -31,6 +31,9 @@ export default class ProfileApi implements IProfileApi {
    * @returns A promise that resolves to the profile object containing email, username, and name.
    */
   async getProfile(token: string): Promise<User> {
-    return get<User>("/users", token);
+    const response = await get<User>("/users", token);
+    console.log("printing user profile");
+    console.log(JSON.stringify(response));
+    return response;
   }
 }
