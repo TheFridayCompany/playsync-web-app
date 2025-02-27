@@ -1,3 +1,5 @@
+import Song from "@/app/features/song/domain/entities/song.entity";
+
 export default interface Playlist {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export default interface Playlist {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  songs: Song[];
   // TODO: collaborators
 }
 

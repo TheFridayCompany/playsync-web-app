@@ -12,6 +12,7 @@ import {
 } from "../store/playlists.slice";
 import CreatePlaylistDto from "../../domain/dto/create-playlist.dto";
 import IPlaylistSongService from "../../domain/interfaces/playlist-song.service.interface";
+import Playlist from "../../domain/entities/playlist.entity";
 
 const usePlaylists = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,10 @@ const usePlaylists = () => {
       console.log("reached finally block");
       dispatch(resetLoading());
     }
+  };
+
+  const fetchPlaylist = (id: string) => {
+    return (playlists as Playlist[]).find((playlist) => playlist.id === id);
   };
 
   const createPlaylist = async (dto: CreatePlaylistDto) => {
@@ -92,6 +97,7 @@ const usePlaylists = () => {
     playlists,
     isLoading,
     fetchPlaylists,
+    fetchPlaylist,
     createPlaylist,
     deletePlaylist,
     addSong,
