@@ -1,10 +1,12 @@
 "use client";
 
-import PlaylistList from "@/app/features/playlist/presentation/components/PlaylistList";
+import { PlaylistCard } from "@/app/features/playlist/presentation/components/PlaylistList";
 import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
 import { useState } from "react";
 import CreatePlaylistModal from "@/app/features/playlist/presentation/components/CreatePlaylistModal";
 import { useSelector } from "react-redux";
+import Playlist from "@/app/features/playlist/domain/entities/playlist.entity";
+import Link from "next/link";
 
 export default function Playlists() {
   const { isLoading, playlists, createPlaylist, deletePlaylist } =
@@ -26,11 +28,17 @@ export default function Playlists() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <PlaylistList
-          playlists={playlists}
-          onDelete={deletePlaylist}
-          userId={profile.id}
-        />
+        <>
+          {playlists.map((playlist: Playlist) => (
+            <Link key={playlist.id} href={`/home/playlists/${playlist.id}`}>
+              <PlaylistCard
+                playlist={playlist}
+                userId={profile.id}
+                onDelete={deletePlaylist}
+              />
+            </Link>
+          ))}
+        </>
       )}
 
       <CreatePlaylistModal

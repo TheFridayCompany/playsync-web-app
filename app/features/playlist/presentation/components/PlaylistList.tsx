@@ -86,4 +86,4 @@ const PlaylistList: React.FC<PlaylistListProps> = ({
   );
 };
 
-export default PlaylistList;
+export { PlaylistCard, PlaylistList };
