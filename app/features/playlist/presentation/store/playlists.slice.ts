@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Playlist from "../../domain/entities/playlist.entity";
 
 interface PlaylistsState {
+  isLoading: boolean;
   playlists: Playlist[];
 }
 
 const initialState: PlaylistsState = {
+  isLoading: true,
   playlists: [],
 };
 
@@ -37,9 +39,21 @@ const playlistsSlice = createSlice({
     setPlaylists: (state, action: PayloadAction<Playlist[]>) => {
       state.playlists = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    resetLoading: (state) => {
+      state.isLoading = false;
+    },
   },
 });
 
-export const { addPlaylist, removePlaylist, updatePlaylist, setPlaylists } =
-  playlistsSlice.actions;
+export const {
+  addPlaylist,
+  removePlaylist,
+  updatePlaylist,
+  setPlaylists,
+  setLoading,
+  resetLoading,
+} = playlistsSlice.actions;
 export default playlistsSlice.reducer;

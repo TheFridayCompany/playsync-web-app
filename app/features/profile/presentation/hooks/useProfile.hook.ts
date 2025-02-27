@@ -20,15 +20,6 @@ export function useProfile() {
   const { profile, isLoading } = useSelector((state: any) => state.profile);
 
   useEffect(() => {
-    console.log("checking profile if isLoggedIn is true: " + isLoggedIn);
-    if (isLoggedIn && !profile) {
-      (async () => {
-        await checkAndSetProfile();
-      })();
-    }
-  }, [isLoggedIn, profile]);
-
-  useEffect(() => {
     if (!isLoading && profile) router.replace("/home");
   }, [profile, isLoading]);
 
@@ -58,5 +49,5 @@ export function useProfile() {
     }
   };
 
-  return { checkAndSetProfile, profile };
+  return { checkAndSetProfile, profile, isLoggedIn };
 }

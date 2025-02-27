@@ -13,7 +13,7 @@ const PlaylistModal: FC<PlaylistModalProps> = ({
   onAddToPlaylist,
   songId,
 }) => {
-  const { playlists } = useSelector((state: any) => state.playlists);
+  const { playlists, isLoading } = useSelector((state: any) => state.playlists);
   // Prevent background scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -38,25 +38,29 @@ const PlaylistModal: FC<PlaylistModalProps> = ({
         </h2>
 
         {/* Playlist Selection */}
-        <ul className="space-y-2 max-h-60 overflow-y-auto">
-          {playlists.map((playlist: Playlist) => (
-            <li
-              key={playlist.id}
-              className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md"
-            >
-              <span className="text-sm text-black">{playlist.name}</span>
-              <button
-                onClick={() => {
-                  onAddToPlaylist(playlist.id, songId);
-                  onClose();
-                }}
-                className="bg-blue-500 text-white px-3 py-1 rounded-md text-xs hover:bg-blue-600"
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul className="space-y-2 max-h-60 overflow-y-auto">
+            {playlists.map((playlist: Playlist) => (
+              <li
+                key={playlist.id}
+                className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md"
               >
-                Add
-              </button>
-            </li>
-          ))}
-        </ul>
+                <span className="text-sm text-black">{playlist.name}</span>
+                <button
+                  onClick={() => {
+                    onAddToPlaylist(playlist.id, songId);
+                    onClose();
+                  }}
+                  className="bg-blue-500 text-white px-3 py-1 rounded-md text-xs hover:bg-blue-600"
+                >
+                  Add
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

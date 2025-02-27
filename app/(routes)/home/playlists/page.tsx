@@ -7,7 +7,8 @@ import CreatePlaylistModal from "@/app/features/playlist/presentation/components
 import { useSelector } from "react-redux";
 
 export default function Playlists() {
-  const { loading, playlists, createPlaylist, deletePlaylist } = usePlaylists();
+  const { isLoading, playlists, createPlaylist, deletePlaylist } =
+    usePlaylists();
   const { profile } = useSelector((state: any) => state.profile);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,7 +23,7 @@ export default function Playlists() {
   return (
     <div>
       <button onClick={openModal}>Create Playlist</button>
-      {loading ? (
+      {isLoading ? (
         <p>Loading...</p>
       ) : (
         <PlaylistList

@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Inter } from "next/font/google";
 import Sidebar from "@/app/components/Sidebar";
 import Navbar from "@/app/components/Navbar";
 import useAuth from "@/app/features/auth/presentation/hooks/useAuth";
 import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
+import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +15,20 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   const { signOut } = useAuth();
-  const {} = useProfile();
+  const { profile, isLoggedIn, checkAndSetProfile } = useProfile();
+  const { fetchPlaylists } = usePlaylists();
+
+  useEffect(() => {
+    console.log("profile changed: ");
+    console.log(JSON.stringify(profile));
+    if (profile) {
+      fetchPlaylists();
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (isLoggedIn && !profile) checkAndSetProfile();
+  }, [isLoggedIn, profile]);
 
   return (
     <div className={`flex h-screen ${inter.className} bg-gray-900`}>

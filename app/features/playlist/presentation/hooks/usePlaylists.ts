@@ -2,10 +2,11 @@ import { container } from "@/app/common/di/container";
 import { useDispatch, useSelector } from "react-redux";
 import IPlaylistService from "../../domain/interfaces/playlist.service.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
-import { useEffect, useState } from "react";
 import {
   addPlaylist,
   removePlaylist,
+  resetLoading,
+  setLoading,
   setPlaylists,
   updatePlaylist,
 } from "../store/playlists.slice";
@@ -14,9 +15,7 @@ import IPlaylistSongService from "../../domain/interfaces/playlist-song.service.
 
 const usePlaylists = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const { playlists } = useSelector((state: any) => state.playlists);
-  const { profile } = useSelector((state: any) => state.profile);
+  const { playlists, isLoading } = useSelector((state: any) => state.playlists);
 
   const playlistsService = container.get<IPlaylistService>(
     SYMBOLS.IPlaylistService
@@ -26,14 +25,8 @@ const usePlaylists = () => {
     SYMBOLS.IPlaylistSongsService
   );
 
-  useEffect(() => {
-    if (profile) {
-      fetchPlaylists();
-    }
-  }, [profile]);
-
   const fetchPlaylists = async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     try {
       const playlists = await playlistsService.getPlaylists();
       console.log(playlists);
@@ -42,7 +35,8 @@ const usePlaylists = () => {
     } catch (error) {
       console.error("Error fetching playlists:", error);
     } finally {
-      setLoading(false);
+      console.log("reached finally block");
+      dispatch(resetLoading());
     }
   };
 
@@ -96,7 +90,8 @@ const usePlaylists = () => {
 
   return {
     playlists,
-    loading,
+    isLoading,
+    fetchPlaylists,
     createPlaylist,
     deletePlaylist,
     addSong,
