@@ -6,6 +6,7 @@ export default function Landing() {
     <div>
       <Link href="/login">Login</Link>
       <Link href="/signup">Signup</Link>
+      <Link href="/home">Home</Link>
     </div>
   );
 }

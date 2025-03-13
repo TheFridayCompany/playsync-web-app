@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../store/auth.slice";
 import { container } from "@/app/common/di/container";
 import IAuthService from "../../domain/interfaces/auth.service.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
-import { useRouter } from "next/navigation";
 
 const useAuth = () => {
   const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
   const dispatch = useDispatch();
-  const router = useRouter();
   const { isLoggedIn, user } = useSelector((state: any) => state.auth);
   const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (!user) {
-      router.replace("/login");
-    } else {
-      router.replace("/home");
-    }
-  }, [user]);
 
   const restoreSignIn = async () => {
     console.log("restore sign in called");
@@ -29,6 +19,7 @@ const useAuth = () => {
       console.log(JSON.stringify(currentUser));
       if (currentUser) dispatch(login(currentUser));
     } catch (error) {
+      signOut();
       console.error("Error during Google sign-in:", error);
     } finally {
       setLoading(false);

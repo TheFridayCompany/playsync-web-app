@@ -27,6 +27,9 @@ export default class AuthService implements IAuthService {
 
     const currentUser = await this.getCurrentUser();
 
+    console.log("printing current user in auth service");
+    console.log(currentUser);
+
     if (!currentUser) return null;
 
     await this.exchangeAndSaveToken(currentUser.authToken);

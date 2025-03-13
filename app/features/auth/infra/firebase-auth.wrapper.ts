@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
+  Persistence,
 } from "firebase/auth";
 
 @injectable()
@@ -29,13 +30,18 @@ export default class FirebaseAuthGateway implements IAuthGateway {
   }
 
   async checkAuthStatus(): Promise<AuthUser | null> {
-    const currentUser = this.auth.currentUser;
+    return new Promise((resolve) => {
+      this.auth.onAuthStateChanged((currentUser) => {
+        console.log("Firebase auth user state has changed:");
+        console.log(currentUser);
 
-    if (!currentUser) {
-      return null;
-    }
-
-    return this.toAuthUser(this.auth.currentUser);
+        if (!currentUser) {
+          resolve(null); // No user is logged in
+        } else {
+          resolve(this.toAuthUser(currentUser)); // Return AuthUser object
+        }
+      });
+    });
   }
 
   async signInWithGoogle(): Promise<AuthUser | null> {
