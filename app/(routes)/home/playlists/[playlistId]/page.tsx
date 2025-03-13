@@ -25,7 +25,7 @@ const PlaylistPage = () => {
       {playlist && (
         <>
           {playlist.songs.map((song) => (
-            <SongCard song={song} />
+            <SongCard key={song.id} song={song} />
           ))}
         </>
       )}
