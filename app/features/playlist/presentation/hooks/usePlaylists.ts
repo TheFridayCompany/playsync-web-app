@@ -56,6 +56,7 @@ const usePlaylists = () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           userId: "",
+          songs: []
         })
       );
       const playlist = await playlistsService.createPlaylist(dto);

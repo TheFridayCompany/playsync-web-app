@@ -1,11 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import { User } from "@/app/features/profile/domain/entities/user.entity";
+import useSocial from "@/app/features/social/presentation/hooks/useSocial";
+import React, { useEffect, useState } from "react";
 
 export default function FriendsLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { fetchFriends, friends, isLoading } = useSocial();
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+
   // Sample data for friends and pending requests (this would usually come from your state or API)
-  const friends = ["Alice", "Bob", "Charlie", "David"];
+  // const friends = ["Alice", "Bob", "Charlie", "David"];
   const pendingRequests = ["Eve", "Frank"];
 
   // Function to toggle the modal visibility
@@ -31,9 +39,9 @@ export default function FriendsLayout() {
         <div className="flex-1 p-4 border border-gray-300 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Current Friends</h2>
           <ul className="space-y-2">
-            {friends.map((friend, index) => (
+            {(friends as User[]).map((friend, index) => (
               <li key={index} className="text-gray-700">
-                {friend}
+                {friend.username}
               </li>
             ))}
           </ul>
@@ -73,7 +81,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Searching for users:", searchQuery);
-    // Implement search logic here (e.g., filter users from an API or list)
   };
 
   return (

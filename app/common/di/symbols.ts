@@ -23,4 +23,9 @@ export const SYMBOLS = {
   ISongsService: Symbol.for("ISongsService"),
   ISongsRepository: Symbol.for("ISongsRepository"),
   ISongsApi: Symbol.for("ISongsApi"),
+
+  // SOCIAL
+  ISocialApi: Symbol.for("ISocialApi"),
+  ISocialRepository: Symbol.for("ISocialRepository"),
+  ISocialService: Symbol.for("ISocialService"),
 };
