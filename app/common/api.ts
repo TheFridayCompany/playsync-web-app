@@ -86,6 +86,7 @@ export const patch = async <T>(
 export const del = async <T>(
   url: string,
   authToken: string | null = null, // Added authToken parameter
+  body?: object, // Added body parameter
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
@@ -96,6 +97,7 @@ export const del = async <T>(
     const response: AxiosResponse<T> = await axiosInstance.delete(url, {
       ...config,
       headers,
+      data: body,
     });
     return response.data;
   } catch (error) {

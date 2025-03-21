@@ -5,13 +5,13 @@ import FriendRequest from "../../domain/entities/friend-request.entity";
 interface SocialState {
   isLoading: boolean;
   friends: User[];
-  pendingRequest: FriendRequest[];
+  pendingRequests: FriendRequest[];
 }
 
 const initialState: SocialState = {
   isLoading: true,
   friends: [],
-  pendingRequest: [],
+  pendingRequests: [],
 };
 
 const socialSlice = createSlice({
@@ -29,6 +29,17 @@ const socialSlice = createSlice({
     setFriends: (state, action: PayloadAction<User[]>) => {
       state.friends = action.payload;
     },
+    setPendingRequests: (state, action: PayloadAction<FriendRequest[]>) => {
+      state.pendingRequests = action.payload;
+    },
+    addFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
+      state.pendingRequests.push(action.payload);
+    },
+    removePendingFriendRequest: (state, action: PayloadAction<string>) => {
+      state.pendingRequests = state.pendingRequests.filter(
+        (req) => req.id !== action.payload
+      );
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
@@ -38,6 +49,12 @@ const socialSlice = createSlice({
   },
 });
 
-export const { addFriend, removeFriend, setFriends, setLoading, resetLoading } =
-  socialSlice.actions;
+export const {
+  addFriend,
+  removeFriend,
+  setFriends,
+  setLoading,
+  resetLoading,
+  removePendingFriendRequest,
+} = socialSlice.actions;
 export default socialSlice.reducer;

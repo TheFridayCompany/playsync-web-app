@@ -1,12 +1,13 @@
 import { User } from "@/app/features/profile/domain/entities/user.entity";
-import FriendRequest from "../entities/friend-request.entity";
 
 export default interface ISocialService {
   getFriends(): Promise<User[]>;
 
-  getPendingRequests(): Promise<FriendRequest[]>;
+  getPendingRequests(): Promise<any[]>;
 
-  acceptRequest(friendRequest: FriendRequest): Promise<User>;
+  removeFriend(friendId: string): Promise<void>;
 
-  rejectRequest(friendRequest: FriendRequest): Promise<void>;
+  acceptRequest(requestId: string): Promise<User>;
+
+  rejectRequest(requestId: string): Promise<void>;
 }

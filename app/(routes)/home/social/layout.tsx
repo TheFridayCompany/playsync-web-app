@@ -1,20 +1,24 @@
 "use client";
 import { User } from "@/app/features/profile/domain/entities/user.entity";
+import FriendRequest from "@/app/features/social/domain/entities/friend-request.entity";
 import useSocial from "@/app/features/social/presentation/hooks/useSocial";
 import React, { useEffect, useState } from "react";
 
 export default function FriendsLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { fetchFriends, friends, isLoading } = useSocial();
+  const {
+    fetchFriends,
+    fetchPendingRequests,
+    removeFriend,
+    friends,
+    pendingRequests,
+  } = useSocial();
 
   useEffect(() => {
     fetchFriends();
+    fetchPendingRequests();
   }, []);
-
-  // Sample data for friends and pending requests (this would usually come from your state or API)
-  // const friends = ["Alice", "Bob", "Charlie", "David"];
-  const pendingRequests = ["Eve", "Frank"];
 
   // Function to toggle the modal visibility
   const toggleModal = () => {
@@ -42,6 +46,9 @@ export default function FriendsLayout() {
             {(friends as User[]).map((friend, index) => (
               <li key={index} className="text-gray-700">
                 {friend.username}
+                <button onClick={() => removeFriend(friend.id)}>
+                  Remove friend
+                </button>
               </li>
             ))}
           </ul>
@@ -52,9 +59,9 @@ export default function FriendsLayout() {
           <h2 className="text-xl font-semibold mb-4">Pending Requests</h2>
           <ul className="space-y-2">
             {pendingRequests.length > 0 ? (
-              pendingRequests.map((request, index) => (
-                <li key={index} className="text-gray-700">
-                  {request}
+              (pendingRequests as FriendRequest[]).map((request, index) => (
+                <li key={request.id} className="text-gray-700">
+                  {request.sender.username}
                 </li>
               ))
             ) : (
