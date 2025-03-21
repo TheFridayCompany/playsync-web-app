@@ -11,6 +11,7 @@ export default function FriendsLayout() {
     fetchFriends,
     fetchPendingRequests,
     removeFriend,
+    sendRequest,
     friends,
     pendingRequests,
   } = useSocial();
@@ -28,6 +29,10 @@ export default function FriendsLayout() {
   return (
     <div className="p-6 space-y-6">
       {/* Button to open modal */}
+
+      <button onClick={() => sendRequest("67aab03b833f69d4e6bf7d25")}>
+        Send request
+      </button>
       <button
         onClick={toggleModal}
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"

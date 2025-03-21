@@ -53,8 +53,10 @@ export const {
   addFriend,
   removeFriend,
   setFriends,
+  setPendingRequests,
   setLoading,
   resetLoading,
   removePendingFriendRequest,
+  addFriendRequest,
 } = socialSlice.actions;
 export default socialSlice.reducer;

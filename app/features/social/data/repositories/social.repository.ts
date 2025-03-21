@@ -15,6 +15,11 @@ export default class SocialRepository implements ISocialRepository {
     private _tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
+  async sendRequest(userId: string): Promise<FriendRequest> {
+    const token = await this.getTokenOrThrow();
+    return this.socialApi.sendRequest(token, userId);
+  }
+
   async getFriends(): Promise<User[]> {
     const token = await this.getTokenOrThrow();
     return this.socialApi.getFriends(token);
@@ -30,7 +35,7 @@ export default class SocialRepository implements ISocialRepository {
     return this.socialApi.removeFriend(token, friendId);
   }
 
-  async acceptRequest(requestId: string): Promise<void> {
+  async acceptRequest(requestId: string): Promise<User> {
     const token = await this.getTokenOrThrow();
     return this.socialApi.acceptRequest(token, requestId);
   }

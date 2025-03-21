@@ -8,6 +8,8 @@ import {
   removeFriend as removeFriendFromStore,
   addFriend,
   removePendingFriendRequest,
+  setPendingRequests,
+  addFriendRequest,
 } from "../store/social.slice";
 
 const useSocial = () => {
@@ -35,7 +37,7 @@ const useSocial = () => {
     dispatch(setLoading(true));
     try {
       const response = await socialService.getPendingRequests();
-      dispatch(setFriends(response));
+      dispatch(setPendingRequests(response));
       console.log(response);
     } catch (e) {
       console.log(e);
@@ -75,6 +77,17 @@ const useSocial = () => {
     }
   };
 
+  const sendRequest = async (userId: string) => {
+    try {
+      // await socialService.send(requestId);
+      const friendRequest = await socialService.sendRequest(userId);
+      dispatch(addFriendRequest(friendRequest));
+      console.log("Request rejected");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return {
     friends,
     pendingRequests,
@@ -82,6 +95,7 @@ const useSocial = () => {
     fetchFriends,
     fetchPendingRequests,
     removeFriend,
+    sendRequest,
     acceptRequest,
     rejectRequest,
   };

@@ -26,9 +26,12 @@ export default class SocialService implements ISocialService {
     return this.socialRepository.getPendingFriendRequests();
   }
 
+  sendRequest(userId: string): Promise<FriendRequest> {
+    return this.socialRepository.sendRequest(userId);
+  }
+
   async acceptRequest(requestId: string): Promise<User> {
-    const response = await this.socialRepository.acceptRequest(requestId);
-    throw new Error("Method not implemented.");
+    return this.socialRepository.acceptRequest(requestId);
   }
 
   rejectRequest(requestId: string): Promise<void> {

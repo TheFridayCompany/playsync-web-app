@@ -8,7 +8,9 @@ export default interface ISocialRepository {
 
   removeFriend(friendId: string): Promise<void>;
 
-  acceptRequest(requestId: string): Promise<void>;
+  sendRequest(userId: string): Promise<FriendRequest>;
+
+  acceptRequest(requestId: string): Promise<User>;
 
   rejectRequest(requestId: string): Promise<void>;
 }
