@@ -5,13 +5,8 @@ import { injectable } from "inversify";
 
 @injectable()
 export default class ProfileApi implements IProfileApi {
-  async create(
-    email: string,
-    username: string,
-    name: string,
-    token: string
-  ): Promise<User> {
-    const user = await post<User>("/users", { email, username, name }, token);
+  async create(username: string, name: string, token: string): Promise<User> {
+    const user = await post<User>("/users", { username, name }, token);
     return user;
   }
 

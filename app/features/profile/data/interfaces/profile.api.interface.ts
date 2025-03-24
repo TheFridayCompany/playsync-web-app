@@ -8,12 +8,7 @@ export default interface IProfileApi {
    * @param name - The full name of the user.
    * @returns A promise that resolves when the profile is created.
    */
-  create(
-    email: string,
-    username: string,
-    name: string,
-    token: string
-  ): Promise<User>;
+  create(username: string, name: string, token: string): Promise<User>;
 
   /**
    * Deletes a user profile by their user ID.
