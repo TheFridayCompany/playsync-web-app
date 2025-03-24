@@ -2,7 +2,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Define base URL for API calls
-const API_URL = "http://localhost:4000";
+const API_URL = process.env.REMOTE_SERVER || "http://localhost:4000";
 
 // Axios instance configuration
 const axiosInstance = axios.create({
