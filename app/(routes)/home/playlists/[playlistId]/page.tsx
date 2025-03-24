@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const PlaylistPage = () => {
   const params = useParams();
   const playlistId = params?.playlistId as string;
-  const { fetchPlaylist } = usePlaylists();
+  const { fetchPlaylist, removeSong } = usePlaylists();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
 
   useEffect(() => {
@@ -19,13 +19,34 @@ const PlaylistPage = () => {
     }
   }, []);
 
+  const handleRemoveSong = async (songId: string) => {
+    try {
+      if (playlist) {
+        await removeSong(playlistId, songId);
+        setPlaylist({
+          ...playlist,
+          songs: playlist.songs.filter((song) => song.id !== songId),
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div>
       <h1>Playlist ID: {playlistId}</h1>
       {playlist && (
         <>
           {playlist.songs.map((song) => (
-            <SongCard key={song.id} song={song} />
+            <SongCard key={song.id} song={song}>
+              <button
+                onClick={(_) => handleRemoveSong(song.id)}
+                className="text-red-500"
+              >
+                Remove song
+              </button>
+            </SongCard>
           ))}
         </>
       )}
