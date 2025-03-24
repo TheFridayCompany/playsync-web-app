@@ -12,6 +12,16 @@ export default class SocialService implements ISocialService {
     private readonly socialRepository: ISocialRepository
   ) {}
 
+  searchUsersByUsername(query: string): Promise<User[]> {
+    const processedQuery = query.trim();
+
+    if (!processedQuery) {
+      return Promise.resolve([]);
+    }
+
+    return this.socialRepository.searchUsersByUsername(processedQuery);
+  }
+
   async getFriends(): Promise<User[]> {
     const response = await this.socialRepository.getFriends();
     console.log(JSON.stringify(response));

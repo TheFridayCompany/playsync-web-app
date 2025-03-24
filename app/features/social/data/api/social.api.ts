@@ -6,6 +6,15 @@ import FriendRequest from "../../domain/entities/friend-request.entity";
 
 @injectable()
 export default class SocialApi implements ISocialApi {
+  async searchUsersByUsername(token: string, query: string): Promise<User[]> {
+    const response = await get<User[]>(
+      `/users/search?username=${query}`,
+      token
+    );
+    console.log("printing response in social api");
+    console.log(response);
+    return response;
+  }
   async getFriends(token: string): Promise<User[]> {
     const response = await get<User[]>("/friendship", token);
     console.log(JSON.stringify(response));

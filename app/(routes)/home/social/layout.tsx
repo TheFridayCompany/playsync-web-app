@@ -1,8 +1,10 @@
 "use client";
 import { User } from "@/app/features/profile/domain/entities/user.entity";
+import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
 import FriendRequest from "@/app/features/social/domain/entities/friend-request.entity";
 import useSocial from "@/app/features/social/presentation/hooks/useSocial";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function FriendsLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +19,8 @@ export default function FriendsLayout() {
     friends,
     pendingRequests,
   } = useSocial();
+
+  const { profile } = useSelector((state: any) => state.profile);
 
   useEffect(() => {
     fetchFriends();
@@ -72,18 +76,22 @@ export default function FriendsLayout() {
               (pendingRequests as FriendRequest[]).map((request, index) => (
                 <li key={request.id} className="text-gray-700">
                   {request.sender.username}
-                  <button
-                    className="text-green-500"
-                    onClick={(_) => acceptRequest(request.id)}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="text-red-500"
-                    onClick={(_) => rejectRequest(request.id)}
-                  >
-                    Reject
-                  </button>
+                  {request.sender.id != profile.id && (
+                    <>
+                      <button
+                        className="text-green-500"
+                        onClick={(_) => acceptRequest(request.id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="text-red-500"
+                        onClick={(_) => rejectRequest(request.id)}
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
                 </li>
               ))
             ) : (
@@ -102,14 +110,29 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { searchUsersByUsername, friends, removeFriend, sendRequest } =
+    useSocial();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Searching for users:", searchQuery);
+    setIsLoading(true);
+    try {
+      const users = await searchUsersByUsername(searchQuery);
+      console.log("printing users in presentation layer");
+      console.log(users);
+      if (users) setUsers(users);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -128,7 +151,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             value={searchQuery}
             onChange={handleSearchChange}
             placeholder="Search by username"
-            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="text-black w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
@@ -137,6 +160,33 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             Search
           </button>
         </form>
+
+        <ul>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            users.map((user, index) => (
+              <p key={user.id} className="text-black">
+                {user.username}
+                {friends.some((friend: any) => friend.id == user.id) ? (
+                  <button
+                    className="text-red-500"
+                    onClick={(_) => removeFriend(user.id)}
+                  >
+                    Remove Friend
+                  </button>
+                ) : (
+                  <button
+                    className="text-green-500"
+                    onClick={(_) => sendRequest(user.id)}
+                  >
+                    Add Friend
+                  </button>
+                )}
+              </p>
+            ))
+          )}
+        </ul>
       </div>
     </div>
   );

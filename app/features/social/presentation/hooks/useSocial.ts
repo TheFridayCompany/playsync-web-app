@@ -80,10 +80,18 @@ const useSocial = () => {
 
   const sendRequest = async (userId: string) => {
     try {
-      // await socialService.send(requestId);
       const friendRequest = await socialService.sendRequest(userId);
       dispatch(addFriendRequest(friendRequest));
       console.log("Request rejected");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const searchUsersByUsername = async (query: string) => {
+    try {
+      const users = await socialService.searchUsersByUsername(query);
+      return users;
     } catch (e) {
       console.log(e);
     }
@@ -99,6 +107,7 @@ const useSocial = () => {
     sendRequest,
     acceptRequest,
     rejectRequest,
+    searchUsersByUsername,
   };
 };
 

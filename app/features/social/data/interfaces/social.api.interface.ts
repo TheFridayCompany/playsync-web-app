@@ -13,4 +13,6 @@ export default interface ISocialApi {
   acceptRequest(token: string, requestId: string): Promise<User>;
 
   rejectRequest(token: string, requestId: string): Promise<void>;
+
+  searchUsersByUsername(token: string, query: string): Promise<User[]>;
 }

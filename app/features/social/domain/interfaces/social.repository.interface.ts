@@ -13,4 +13,6 @@ export default interface ISocialRepository {
   acceptRequest(requestId: string): Promise<User>;
 
   rejectRequest(requestId: string): Promise<void>;
+
+  searchUsersByUsername(query: string): Promise<User[]>;
 }

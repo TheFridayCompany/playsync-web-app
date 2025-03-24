@@ -15,6 +15,11 @@ export default class SocialRepository implements ISocialRepository {
     private _tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
+  async searchUsersByUsername(query: string): Promise<User[]> {
+    const token = await this.getTokenOrThrow();
+    return this.socialApi.searchUsersByUsername(token, query);
+  }
+
   async sendRequest(userId: string): Promise<FriendRequest> {
     const token = await this.getTokenOrThrow();
     return this.socialApi.sendRequest(token, userId);
