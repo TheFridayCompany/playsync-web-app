@@ -61,6 +61,7 @@ const useSocial = () => {
     try {
       const user = await socialService.acceptRequest(requestId);
       dispatch(addFriend(user));
+      dispatch(removePendingFriendRequest(requestId));
       console.log("Request accepted");
     } catch (e) {
       console.log(e);

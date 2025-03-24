@@ -12,6 +12,8 @@ export default function FriendsLayout() {
     fetchPendingRequests,
     removeFriend,
     sendRequest,
+    acceptRequest,
+    rejectRequest,
     friends,
     pendingRequests,
   } = useSocial();
@@ -51,7 +53,10 @@ export default function FriendsLayout() {
             {(friends as User[]).map((friend, index) => (
               <li key={index} className="text-gray-700">
                 {friend.username}
-                <button onClick={() => removeFriend(friend.id)}>
+                <button
+                  onClick={() => removeFriend(friend.id)}
+                  className="text-red-500"
+                >
                   Remove friend
                 </button>
               </li>
@@ -67,6 +72,18 @@ export default function FriendsLayout() {
               (pendingRequests as FriendRequest[]).map((request, index) => (
                 <li key={request.id} className="text-gray-700">
                   {request.sender.username}
+                  <button
+                    className="text-green-500"
+                    onClick={(_) => acceptRequest(request.id)}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="text-red-500"
+                    onClick={(_) => rejectRequest(request.id)}
+                  >
+                    Reject
+                  </button>
                 </li>
               ))
             ) : (
