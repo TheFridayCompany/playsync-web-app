@@ -1,3 +1,4 @@
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 import CreatePlaylistDto from "../dto/create-playlist.dto";
 import Playlist from "../entities/playlist.entity";
 
@@ -39,4 +40,6 @@ export default interface IPlaylistService {
    * @returns {Promise<Playlist>} A promise that resolves to the playlist with the given ID.
    */
   getPlaylist(id: string): Promise<Playlist>;
+
+  getCollaborators(id: string): Promise<User[]>;
 }

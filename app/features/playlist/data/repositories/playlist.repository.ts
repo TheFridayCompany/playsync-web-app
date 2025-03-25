@@ -5,6 +5,7 @@ import { SYMBOLS } from "@/app/common/di/symbols";
 import type IPlaylistsApi from "../interfaces/playlists.api.interface";
 import type ITokenPersistenceRepository from "@/app/features/auth/domain/interfaces/token-persistence.repository.interface";
 import CreatePlaylistDto from "../../domain/dto/create-playlist.dto";
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 
 export default class PlaylistsRepository implements IPlaylistsRepository {
   constructor(
@@ -12,6 +13,11 @@ export default class PlaylistsRepository implements IPlaylistsRepository {
     @inject(SYMBOLS.ITokenPersistenceRepository)
     private readonly tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
+
+  async getCollaborators(id: string): Promise<User[]> {
+    const token = await this.getToken();
+    return this.playlistApi.getCollaborators(id, token);
+  }
 
   async addSong(id: string, songId: string): Promise<Playlist> {
     const token = await this.getToken();

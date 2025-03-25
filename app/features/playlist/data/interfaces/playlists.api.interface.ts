@@ -1,3 +1,4 @@
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 import Playlist from "../../domain/entities/playlist.entity";
 
 /**
@@ -39,4 +40,6 @@ export default interface IPlaylistsApi {
   addSong(id: string, songId: string, authToken: string): Promise<Playlist>;
 
   removeSong(id: string, songId: string, authToken: string): Promise<Playlist>;
+
+  getCollaborators(id: string, authToken: string): Promise<User[]>;
 }

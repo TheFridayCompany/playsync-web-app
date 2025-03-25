@@ -6,6 +6,7 @@ import Navbar from "@/app/components/Navbar";
 import useAuth from "@/app/features/auth/presentation/hooks/useAuth";
 import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
 import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
+import useSocial from "@/app/features/social/presentation/hooks/useSocial";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function HomeLayout({
   const { signOut } = useAuth();
   const { profile, isLoggedIn, checkAndSetProfile } = useProfile();
   const { fetchPlaylists } = usePlaylists();
+  const { fetchFriends } = useSocial();
 
   useEffect(() => {
     console.log("profile changed: ");
     console.log(JSON.stringify(profile));
     if (profile) {
       fetchPlaylists();
+      fetchFriends();
     }
   }, [profile]);
 

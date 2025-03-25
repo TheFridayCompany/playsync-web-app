@@ -1,3 +1,4 @@
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 import Song from "@/app/features/song/domain/entities/song.entity";
 
 export default interface Playlist {

@@ -1,3 +1,4 @@
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 import CreatePlaylistDto from "../dto/create-playlist.dto";
 import Playlist from "../entities/playlist.entity";
 
@@ -38,4 +39,6 @@ export default interface IPlaylistsRepository {
   addSong(id: string, songId: string): Promise<Playlist>;
 
   removeSong(id: string, songId: string): Promise<Playlist>;
+
+  getCollaborators(id: string): Promise<User[]>;
 }

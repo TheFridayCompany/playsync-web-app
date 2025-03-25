@@ -10,7 +10,6 @@ export default function FriendsLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
-    fetchFriends,
     fetchPendingRequests,
     removeFriend,
     sendRequest,
@@ -23,7 +22,6 @@ export default function FriendsLayout() {
   const { profile } = useSelector((state: any) => state.profile);
 
   useEffect(() => {
-    fetchFriends();
     fetchPendingRequests();
   }, []);
 

@@ -38,6 +38,7 @@ const usePlaylists = () => {
     } finally {
       console.log("reached finally block");
       dispatch(resetLoading());
+      return [];
     }
   };
 
@@ -56,7 +57,7 @@ const usePlaylists = () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           userId: "",
-          songs: []
+          songs: [],
         })
       );
       const playlist = await playlistsService.createPlaylist(dto);
@@ -94,6 +95,15 @@ const usePlaylists = () => {
     }
   };
 
+  const fetchCollaborators = async (id: string) => {
+    try {
+      const users = await playlistsService.getCollaborators(id);
+      return users;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return {
     playlists,
     isLoading,
@@ -103,6 +113,7 @@ const usePlaylists = () => {
     deletePlaylist,
     addSong,
     removeSong,
+    fetchCollaborators,
   };
 };
 

@@ -2,9 +2,14 @@ import { injectable } from "inversify";
 import IPlaylistsApi from "../interfaces/playlists.api.interface";
 import { del, get, post } from "@/app/common/api";
 import Playlist from "../../domain/entities/playlist.entity";
+import { User } from "@/app/features/profile/domain/entities/user.entity";
 
 @injectable()
 export default class PlaylistsApi implements IPlaylistsApi {
+  getCollaborators(id: string, authToken: string): Promise<User[]> {
+    return get(`/playlists/${id}/collaborators`, authToken);
+  }
+
   addSong(id: string, songId: string, authToken: string): Promise<Playlist> {
     return post(`/playlists/${id}/song/${songId}`, {}, authToken, {});
   }
