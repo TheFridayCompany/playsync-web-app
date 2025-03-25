@@ -5,6 +5,7 @@ import { SYMBOLS } from "@/app/common/di/symbols";
 import { setLoading, setProfile } from "../store/profile.slice";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import useAuth from "@/app/features/auth/presentation/hooks/useAuth";
 
 /**
  * Custom hook for managing user profile state.
@@ -18,6 +19,7 @@ export function useProfile() {
   const router = useRouter();
   const { isLoggedIn } = useSelector((state: any) => state.auth);
   const { profile, isLoading } = useSelector((state: any) => state.profile);
+  const { signOut } = useAuth();
 
   useEffect(() => {
     if (!isLoading && profile) router.replace("/home");
@@ -49,5 +51,18 @@ export function useProfile() {
     }
   };
 
-  return { checkAndSetProfile, profile, isLoggedIn };
+  const deleteProfile = async () => {
+    await profileService.deleteProfile();
+    await signOut();
+  };
+
+  const createProfile = async (username: string, name: string) => {};
+
+  return {
+    checkAndSetProfile,
+    deleteProfile,
+    createProfile,
+    profile,
+    isLoggedIn,
+  };
 }
