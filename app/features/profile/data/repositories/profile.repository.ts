@@ -30,7 +30,6 @@ export default class ProfileRepository implements IProfileRepository {
 
   async deleteProfile(): Promise<void> {
     const token = await this.getToken();
-
     await this.profileApi.delete(token);
   }
 

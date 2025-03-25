@@ -16,6 +16,7 @@ export default class ProfileApi implements IProfileApi {
    * @returns A promise that resolves when the profile is deleted.
    */
   async delete(token: string): Promise<void> {
+    console.log("reached profile api delete call");
     await del("/users", token);
   }
 

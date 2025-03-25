@@ -42,8 +42,6 @@ export default class AuthService implements IAuthService {
   }
 
   async login(): Promise<AuthUser> {
-    console.log("[auth.service] login called");
-
     const currentUser = await this._authRepository.signInWithGoogle();
 
     if (!currentUser) throw new Error("Google sign in failed");

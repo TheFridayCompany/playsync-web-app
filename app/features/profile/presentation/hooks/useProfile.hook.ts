@@ -45,7 +45,7 @@ export function useProfile() {
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
-      router.replace("/signup");
+      router.replace("/login");
     } finally {
       dispatch(setLoading(false));
     }
@@ -56,7 +56,18 @@ export function useProfile() {
     await signOut();
   };
 
-  const createProfile = async (username: string, name: string) => {};
+  const createProfile = async (username: string, name: string) => {
+    dispatch(setLoading(true));
+    try {
+      const user = await profileService.createProfile(username, name);
+      dispatch(setProfile(user));
+      router.replace("/home");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   return {
     checkAndSetProfile,

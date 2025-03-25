@@ -2,15 +2,14 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Define base URL for API calls
-const API_URL = "https://playsync-api.onrender.com";
-// const API_URL = "http://localhost:4000";
+// const API_URL = "https://playsync-api.onrender.com";
+const API_URL = "http://localhost:4000";
 
 // Axios instance configuration
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": API_URL,
   },
 });
 
