@@ -8,18 +8,27 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-// Sidebar component to display collaborators
-const Sidebar = ({ collaborators }: { collaborators: User[] }) => {
+const Sidebar = ({
+  collaborators,
+  onRemoveCollaborator,
+}: {
+  collaborators: User[];
+  onRemoveCollaborator: (userId: string) => void;
+}) => {
   return (
     <div className="w-1/4 bg-gray-800 text-white p-4">
       <h2 className="text-lg font-semibold mb-4">Collaborators</h2>
       <ul>
         {collaborators.map((collaborator) => (
           <li key={collaborator.id} className="mb-2">
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               <span>{collaborator.username}</span>
-              {/* TODO: implement remove collaborator */}
-              <button className="text-red-500 ml-2">Remove collaborator</button>
+              <button
+                onClick={() => onRemoveCollaborator(collaborator.id)}
+                className="text-red-500 ml-2"
+              >
+                Remove
+              </button>
             </div>
           </li>
         ))}
@@ -131,6 +140,17 @@ const PlaylistPage = () => {
     }
   };
 
+  const handleRemoveCollaborator = async (userId: string) => {
+    try {
+      await removeCollaborator(playlistId, userId);
+      setCollaborators((prevCollaborators) =>
+        prevCollaborators.filter((collaborator) => collaborator.id !== userId)
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="flex">
       {/* Playlist Content */}
@@ -159,7 +179,10 @@ const PlaylistPage = () => {
       </div>
 
       {/* Sidebar */}
-      <Sidebar collaborators={collaborators} />
+      <Sidebar
+        collaborators={collaborators}
+        onRemoveCollaborator={handleRemoveCollaborator}
+      />
 
       {/* Modal to Add Collaborator */}
       <AddCollaboratorModal
