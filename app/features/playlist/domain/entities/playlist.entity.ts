@@ -7,8 +7,8 @@ export default interface Playlist {
   description?: string;
   visibility: PlaylistVisibility;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
   songs: Song[];
   // TODO: collaborators
 }

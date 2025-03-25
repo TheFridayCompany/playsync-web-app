@@ -1,6 +1,5 @@
 "use client";
 import { User } from "@/app/features/profile/domain/entities/user.entity";
-import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
 import FriendRequest from "@/app/features/social/domain/entities/friend-request.entity";
 import useSocial from "@/app/features/social/presentation/hooks/useSocial";
 import React, { useEffect, useState } from "react";
@@ -73,7 +72,9 @@ export default function FriendsLayout() {
             {pendingRequests.length > 0 ? (
               (pendingRequests as FriendRequest[]).map((request, index) => (
                 <li key={request.id} className="text-gray-700">
-                  {request.sender.username}
+                  {request.sender.id == profile.id
+                    ? request.receiver.username
+                    : request.sender.username}
                   {request.sender.id != profile.id && (
                     <>
                       <button

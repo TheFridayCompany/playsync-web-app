@@ -54,8 +54,8 @@ const usePlaylists = () => {
         addPlaylist({
           ...dto,
           id: temp_id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
           userId: "",
           songs: [],
         })
