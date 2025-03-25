@@ -14,6 +14,19 @@ export default class PlaylistsRepository implements IPlaylistsRepository {
     private readonly tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
+  async addCollaborator(playlistId: string, friendId: string): Promise<User> {
+    const token = await this.getToken();
+    return this.playlistApi.addCollaborator(playlistId, friendId, token);
+  }
+
+  async removeCollaborator(
+    playlistId: string,
+    friendId: string
+  ): Promise<void> {
+    const token = await this.getToken();
+    return this.playlistApi.removeCollaborator(playlistId, friendId, token);
+  }
+
   async getCollaborators(id: string): Promise<User[]> {
     const token = await this.getToken();
     return this.playlistApi.getCollaborators(id, token);

@@ -6,6 +6,28 @@ import { User } from "@/app/features/profile/domain/entities/user.entity";
 
 @injectable()
 export default class PlaylistsApi implements IPlaylistsApi {
+  addCollaborator(
+    playlistId: string,
+    friendId: string,
+    authToken: string
+  ): Promise<User> {
+    return post(
+      `/playlists/${playlistId}/collaborators`,
+      { collaboratorId: friendId },
+      authToken
+    );
+  }
+
+  removeCollaborator(
+    playlistId: string,
+    friendId: string,
+    authToken: string
+  ): Promise<void> {
+    return del(`/playlists/${playlistId}/collaborators`, authToken, {
+      collaboratorId: friendId,
+    });
+  }
+
   getCollaborators(id: string, authToken: string): Promise<User[]> {
     return get(`/playlists/${id}/collaborators`, authToken);
   }

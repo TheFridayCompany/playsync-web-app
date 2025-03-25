@@ -104,6 +104,27 @@ const usePlaylists = () => {
     }
   };
 
+  const addCollaborator = async (playlistId: string, friendId: string) => {
+    try {
+      const user = await playlistsService.addCollaborator(playlistId, friendId);
+      return user;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const removeCollaborator = async (playlistId: string, friendId: string) => {
+    try {
+      const user = await playlistsService.removeCollaborator(
+        playlistId,
+        friendId
+      );
+      return user;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return {
     playlists,
     isLoading,
@@ -114,6 +135,8 @@ const usePlaylists = () => {
     addSong,
     removeSong,
     fetchCollaborators,
+    addCollaborator,
+    removeCollaborator,
   };
 };
 

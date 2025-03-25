@@ -42,4 +42,16 @@ export default interface IPlaylistsApi {
   removeSong(id: string, songId: string, authToken: string): Promise<Playlist>;
 
   getCollaborators(id: string, authToken: string): Promise<User[]>;
+
+  addCollaborator(
+    playlistId: string,
+    friendId: string,
+    authToken: string
+  ): Promise<User>;
+
+  removeCollaborator(
+    playlistId: string,
+    friendId: string,
+    authToken: string
+  ): Promise<void>;
 }

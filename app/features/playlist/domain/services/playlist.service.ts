@@ -13,6 +13,14 @@ export default class PlaylistService implements IPlaylistService {
     private readonly playlistRepository: IPlaylistsRepository
   ) {}
 
+  addCollaborator(playlistId: string, friendId: string): Promise<User> {
+    return this.playlistRepository.addCollaborator(playlistId, friendId);
+  }
+
+  removeCollaborator(playlistId: string, friendId: string): Promise<void> {
+    return this.playlistRepository.removeCollaborator(playlistId, friendId);
+  }
+
   getCollaborators(id: string): Promise<User[]> {
     return this.playlistRepository.getCollaborators(id);
   }

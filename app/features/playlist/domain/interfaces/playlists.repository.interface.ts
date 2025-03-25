@@ -41,4 +41,8 @@ export default interface IPlaylistsRepository {
   removeSong(id: string, songId: string): Promise<Playlist>;
 
   getCollaborators(id: string): Promise<User[]>;
+
+  addCollaborator(playlistId: string, friendId: string): Promise<User>;
+
+  removeCollaborator(playlistId: string, friendId: string): Promise<void>;
 }

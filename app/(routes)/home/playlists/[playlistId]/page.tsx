@@ -75,7 +75,13 @@ const AddCollaboratorModal = ({
 const PlaylistPage = () => {
   const params = useParams();
   const playlistId = params?.playlistId as string;
-  const { fetchPlaylist, removeSong, fetchCollaborators } = usePlaylists();
+  const {
+    fetchPlaylist,
+    removeSong,
+    fetchCollaborators,
+    addCollaborator,
+    removeCollaborator,
+  } = usePlaylists();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [collaborators, setCollaborators] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,11 +120,11 @@ const PlaylistPage = () => {
 
   const handleAddCollaborator = async (userId: string) => {
     try {
-      // await addCollaborator(playlistId, userId);
-      // setCollaborators((prevCollaborators) => [
-      //   ...prevCollaborators,
-      //   friends.find((friend) => friend.id === userId) as User,
-      // ]);
+      await addCollaborator(playlistId, userId);
+      setCollaborators((prevCollaborators) => [
+        ...prevCollaborators,
+        friends.find((friend: any) => friend.id === userId) as User,
+      ]);
       setIsModalOpen(false); // Close modal after adding
     } catch (e) {
       console.error(e);
