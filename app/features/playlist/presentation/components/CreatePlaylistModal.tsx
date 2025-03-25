@@ -50,7 +50,9 @@ export default function CreatePlaylistModal({
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-        <h2 className="text-2xl font-semibold mb-4">Create Playlist</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-black">
+          Create Playlist
+        </h2>
 
         {/* Playlist Name Input */}
         <input
