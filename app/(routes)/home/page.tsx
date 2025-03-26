@@ -1,5 +1,5 @@
 "use client";
-
+import DeleteProfileButton from "@/app/components/buttons/DeleteProfileButton";
 import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
 
 export default function Home() {
@@ -10,10 +10,13 @@ export default function Home() {
     if (!didConfirm) return;
     await deleteProfile();
   };
+  
   return (
     <div>
       Home
-      <button onClick={handleDelete}>Delete profile</button>
+      <div className="max-w-sm mx-auto p-4">
+        <DeleteProfileButton onClick={handleDelete} />
+      </div>
     </div>
   );
 }

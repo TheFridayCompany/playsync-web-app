@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect } from "react";
 import { Inter } from "next/font/google";
-import Sidebar from "@/app/components/Sidebar";
-import Navbar from "@/app/components/Navbar";
+import Sidebar from "@/app/components/navigation/Sidebar";
+import Navbar from "@/app/components/navigation/Navbar";
 import useAuth from "@/app/features/auth/presentation/hooks/useAuth";
 import { useProfile } from "@/app/features/profile/presentation/hooks/useProfile.hook";
 import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
 import useSocial from "@/app/features/social/presentation/hooks/useSocial";
+import LogoutButton from "@/app/components/buttons/LogoutButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,7 +44,9 @@ export default function HomeLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col ml-64">
         {/* Top Navbar */}
-        <Navbar onLogout={signOut} />
+        <Navbar>
+          <LogoutButton onClick={signOut} />
+        </Navbar>
 
         {/* Main Content Section */}
         <main className="flex-1 overflow-auto p-6 bg-gray-800 text-white">

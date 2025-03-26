@@ -1,7 +1,9 @@
+import CreatePlaylistDto from "@/app/features/playlist/domain/dto/create-playlist.dto";
+import { PlaylistVisibility } from "@/app/features/playlist/domain/entities/playlist.entity";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { PlaylistVisibility } from "../../domain/entities/playlist.entity";
-import CreatePlaylistDto from "../../domain/dto/create-playlist.dto";
+import CreatePlaylistButton from "../buttons/CreatePlaylistButton";
+import { CloseTextButton } from "../buttons/CloseButton";
 
 interface CreatePlaylistModalProps {
   isOpen: boolean;
@@ -111,18 +113,8 @@ export default function CreatePlaylistModal({
 
         {/* Buttons */}
         <div className="flex justify-end space-x-4">
-          <button
-            onClick={() => formik.handleSubmit()}
-            className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            Create Playlist
-          </button>
-          <button
-            onClick={onClose}
-            className="px-6 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            Close
-          </button>
+          <CreatePlaylistButton onClick={() => formik.handleSubmit()} />
+          <CloseTextButton onClick={onClose} />
         </div>
       </div>
     </div>

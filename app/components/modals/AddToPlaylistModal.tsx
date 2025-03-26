@@ -1,14 +1,14 @@
+import Playlist from "@/app/features/playlist/domain/entities/playlist.entity";
 import { FC, useEffect } from "react";
-import Playlist from "../../domain/entities/playlist.entity";
 import { useSelector } from "react-redux";
 
-interface PlaylistModalProps {
+interface AddToPlaylistModalProps {
   onClose: () => void;
-  onAddToPlaylist: (songId: string, playlistId: string) => void;
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
   songId: string;
 }
 
-const PlaylistModal: FC<PlaylistModalProps> = ({
+const AddToPlaylistModal: FC<AddToPlaylistModalProps> = ({
   onClose,
   onAddToPlaylist,
   songId,
@@ -66,4 +66,4 @@ const PlaylistModal: FC<PlaylistModalProps> = ({
   );
 };
 
-export default PlaylistModal;
+export default AddToPlaylistModal;

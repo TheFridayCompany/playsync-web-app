@@ -1,51 +1,51 @@
 "use client";
-
 import { useState } from "react";
 import { useSongs } from "@/app/features/song/presentation/hooks/useSongs";
-import EnhancedSongCard from "@/app/features/song/presentation/components/EnhancedSongCard";
 import usePlaylists from "@/app/features/playlist/presentation/hooks/usePlaylists";
+import SongCard from "@/app/components/cards/SongCard";
+import AddSongToPlaylistButton from "@/app/components/buttons/AddSongButton";
+import AddToPlaylistModal from "@/app/components/modals/AddToPlaylistModal";
+import Song from "@/app/features/song/domain/entities/song.entity";
+import SongSearchInput from "@/app/components/inputs/SongSearchInput";
 
 export default function Search() {
   const { songSearch, songs, loading } = useSongs();
   const { addSong } = usePlaylists();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
 
-  const [query, setQuery] = useState(""); // State to manage the input value
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent the default form submission
-    if (query.trim()) {
-      songSearch(query); // Pass the query to the songSearch function
-    }
+  const handleAddSongToPlaylistButtonClick = (song: Song) => {
+    setSelectedSong(song);
+    setIsModalOpen(true);
   };
 
   return (
     <div>
       {/* Search Bar */}
-      <form onSubmit={handleSubmit} className="flex items-center space-x-4">
-        <input
-          type="text"
-          placeholder="Search for songs, artists, or podcasts"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)} // Update query on input change
-          className="bg-gray-800 p-2 rounded-md text-white placeholder-gray-500 focus:outline-none"
-        />
-        <button type="submit" className="text-white">
-          Search
-        </button>
-      </form>
+      <div className="flex items-center space-x-4">
+        <SongSearchInput onSearch={songSearch} />
+      </div>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div className="space-y-4">
           {songs.map((song) => (
-            <EnhancedSongCard
-              key={song.id}
-              song={song}
-              onAddToPlaylist={addSong}
-            />
+            <SongCard key={song.id} song={song}>
+              <AddSongToPlaylistButton
+                onClick={() => handleAddSongToPlaylistButtonClick(song)}
+              />
+            </SongCard>
           ))}
         </div>
+      )}
+
+      {isModalOpen && selectedSong && (
+        <AddToPlaylistModal
+          onClose={() => setIsModalOpen(false)}
+          songId={selectedSong.id}
+          onAddToPlaylist={addSong}
+        />
       )}
     </div>
   );

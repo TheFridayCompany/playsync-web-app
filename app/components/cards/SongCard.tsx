@@ -1,11 +1,11 @@
+import Artist from "@/app/features/song/domain/entities/artist.entity";
+import Song from "@/app/features/song/domain/entities/song.entity";
+import { StreamingPlatforms } from "@/app/features/song/domain/entities/streaming-platforms.enum";
 import { ReactNode } from "react";
-import Artist from "../../domain/entities/artist.entity";
-import Song from "../../domain/entities/song.entity";
-import { StreamingPlatforms } from "../../domain/entities/streaming-platforms.enum";
 
 interface SongCardProps {
   song: Song;
-  children?: ReactNode; // Accept children for custom actions
+  children?: ReactNode;
 }
 
 const SongCard: React.FC<SongCardProps> = ({ song, children }) => {
@@ -54,19 +54,4 @@ const SongCard: React.FC<SongCardProps> = ({ song, children }) => {
   );
 };
 
-interface SongsListProps {
-  songs: Song[];
-  // onAddToPlaylist: (songId: string, playlistId: string) => void;
-}
-
-const SongsList: React.FC<SongsListProps> = ({ songs }) => {
-  return (
-    <div className="space-y-4">
-      {songs.map((song) => (
-        <SongCard key={song.id} song={song} />
-      ))}
-    </div>
-  );
-};
-
-export { SongsList, SongCard };
+export default SongCard;
