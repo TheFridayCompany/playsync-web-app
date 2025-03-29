@@ -6,7 +6,7 @@ import { AuthUser } from "../entities/auth-user.entity";
  */
 export default interface IAuthRepository {
   /**
-   * Signs in the user using Google authentication.
+   * Signs in the user with Google. It uses a different method depending on the platform.
    *
    * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if sign-in is successful, or `null` if it fails.
    */

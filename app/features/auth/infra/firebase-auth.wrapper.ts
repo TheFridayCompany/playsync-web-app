@@ -8,7 +8,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
-  Persistence,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 
 @injectable()
@@ -44,13 +45,36 @@ export default class FirebaseAuthGateway implements IAuthGateway {
     });
   }
 
-  async signInWithGoogle(): Promise<AuthUser | null> {
+  async signInWithGoogleWithPopup(): Promise<AuthUser | null> {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
       return this.toAuthUser(result.user);
     } catch (error) {
-      throw new Error("Google sign-in failed");
+      console.error("Google sign-in failed:", error);
+      return null;
+    }
+  }
+
+  async signInWithGoogleWithRedirect(): Promise<AuthUser | null> {
+    console.log(
+      "sign in with google with redirect method called in firebase wrapper"
+    );
+
+    const provider = new GoogleAuthProvider();
+    try {
+      console.log("before sign in with redirect");
+      await signInWithRedirect(this.auth, provider);
+      console.log("after sign in with redirect");
+      const result = await getRedirectResult(this.auth);
+      if (result) {
+        return this.toAuthUser(result.user); // Convert to AuthUser and return
+      }
+      // Handle the result after redirect completes (handled in the checkAuthStatus method)
+      return null; // This is handled after the redirect completes
+    } catch (error) {
+      console.error("Google sign-in with redirect failed:", error);
+      return null;
     }
   }
 
