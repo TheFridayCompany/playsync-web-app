@@ -10,7 +10,7 @@ const useAuth = () => {
   const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state: any) => state.auth);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const exchangeAndSaveToken = async (authUser: AuthUser) => {
     setLoading(true);
