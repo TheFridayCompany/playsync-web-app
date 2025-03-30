@@ -17,7 +17,7 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   const { signOut } = useAuth();
-  const { profile, isLoggedIn, checkAndSetProfile } = useProfile();
+  const { profile } = useProfile();
   const { fetchPlaylists } = usePlaylists();
   const { fetchFriends } = useSocial();
 
@@ -29,10 +29,6 @@ export default function HomeLayout({
       fetchFriends();
     }
   }, [profile]);
-
-  useEffect(() => {
-    if (isLoggedIn && !profile) checkAndSetProfile();
-  }, [isLoggedIn, profile]);
 
   return (
     <div className={`flex h-screen ${inter.className} bg-gray-900`}>
