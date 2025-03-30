@@ -15,8 +15,6 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Restore sign-in state when the component mounts
-
     // Listen to changes in authentication state (login/logout)
     const unsubscribe = listenToAuthStateChange((user) => {
       console.log("Auth state changed:", user);
