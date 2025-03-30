@@ -8,7 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
-  Persistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 @injectable()
@@ -27,6 +27,16 @@ export default class FirebaseAuthGateway implements IAuthGateway {
     };
     const app = initializeApp(firebaseConfig);
     this.auth = getAuth(app);
+  }
+
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void {
+    return onAuthStateChanged(this.auth, (firebaseUser) => {
+      if (firebaseUser) {
+        this.toAuthUser(firebaseUser).then(callback);
+      } else {
+        callback(null);
+      }
+    });
   }
 
   async checkAuthStatus(): Promise<AuthUser | null> {

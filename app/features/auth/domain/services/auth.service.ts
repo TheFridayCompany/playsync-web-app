@@ -13,7 +13,14 @@ export default class AuthService implements IAuthService {
     private _tokenPersistenceRepository: ITokenPersistenceRepository
   ) {}
 
-  private async exchangeAndSaveToken(socialToken: string) {
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void {
+    this._authRepository.onAuthStateChanged(callback);
+    return () => {
+      this._authRepository.onAuthStateChanged(() => {});
+    };
+  }
+
+  async exchangeAndSaveToken(socialToken: string) {
     const tokenExchange = await this._authRepository.exchangeToken(socialToken);
 
     console.log("exchange token: ");
@@ -22,26 +29,12 @@ export default class AuthService implements IAuthService {
     await this._tokenPersistenceRepository.saveToken(tokenExchange);
   }
 
-  async restoreLogin(): Promise<AuthUser | null> {
-    console.log("[auth.service] restore login called");
-
-    const currentUser = await this.getCurrentUser();
-
-    console.log("printing current user in auth service");
-    console.log(currentUser);
-
-    if (!currentUser) return null;
-
-    await this.exchangeAndSaveToken(currentUser.authToken);
-
-    return currentUser;
-  }
-
   getCurrentUser(): Promise<AuthUser | null> {
     return this._authRepository.getCurrentUser();
   }
 
   async login(): Promise<AuthUser> {
+    console.log("[auth.service] login called");
     const currentUser = await this._authRepository.signInWithGoogle();
 
     if (!currentUser) throw new Error("Google sign in failed");

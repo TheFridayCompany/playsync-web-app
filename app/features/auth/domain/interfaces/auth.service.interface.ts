@@ -27,12 +27,13 @@ export default interface IAuthService {
    */
   getCurrentUser(): Promise<AuthUser | null>;
 
+  exchangeAndSaveToken(socialToken: string): Promise<void>;
+
   /**
-   * Attempts to restore the previous login session.
-   * This method can check for persisted login information (e.g., token, session) and
-   * restore the authentication state if a valid session exists.
+   * Subscribes to authentication state changes.
    *
-   * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if a valid session is found, or `null` if no session exists or the session is invalid.
+   * @param callback - A function that receives an `AuthUser` object when the authentication state changes.
+   * @returns {() => void} - A function to unsubscribe from authentication state changes.
    */
-  restoreLogin(): Promise<AuthUser | null>;
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void;
 }
