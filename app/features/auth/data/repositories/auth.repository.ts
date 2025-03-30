@@ -4,6 +4,7 @@ import IAuthRepository from "../../domain/interfaces/auth.repository.interface";
 import type IAuthApiGateway from "../interfaces/auth.api.interface";
 import type IAuthGateway from "../interfaces/auth.gateway.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
+import { isMobile } from "react-device-detect";
 
 @injectable()
 export default class AuthRepository implements IAuthRepository {
@@ -25,8 +26,6 @@ export default class AuthRepository implements IAuthRepository {
   }
 
   async signInWithGoogle(): Promise<AuthUser | null> {
-    const isMobile = true; // TODO: Detect if the user is on mobile
-
     if (isMobile) {
       return this.authGateway.signInWithGoogleRedirect();
     }
