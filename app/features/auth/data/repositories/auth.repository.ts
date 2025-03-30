@@ -12,6 +12,10 @@ export default class AuthRepository implements IAuthRepository {
     @inject(SYMBOLS.IAuthApiGateway) private readonly authApi: IAuthApiGateway
   ) {}
 
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void {
+    return this.authGateway.onAuthStateChanged(callback);
+  }
+
   getCurrentUser(): Promise<AuthUser | null> {
     return this.authGateway.checkAuthStatus();
   }
@@ -21,7 +25,13 @@ export default class AuthRepository implements IAuthRepository {
   }
 
   async signInWithGoogle(): Promise<AuthUser | null> {
-    return this.authGateway.signInWithGoogle();
+    const isMobile = true; // TODO: Detect if the user is on mobile
+
+    if (isMobile) {
+      return this.authGateway.signInWithGoogleRedirect();
+    }
+
+    return this.authGateway.signInWithGooglePopup();
   }
 
   async signOut(): Promise<void> {

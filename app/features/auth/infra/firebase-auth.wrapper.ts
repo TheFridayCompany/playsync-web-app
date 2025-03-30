@@ -8,7 +8,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
-  Persistence,
+  onAuthStateChanged,
+  signInWithRedirect,
 } from "firebase/auth";
 
 @injectable()
@@ -29,6 +30,38 @@ export default class FirebaseAuthGateway implements IAuthGateway {
     this.auth = getAuth(app);
   }
 
+  async signInWithGooglePopup(): Promise<AuthUser | null> {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(this.auth, provider);
+      return this.toAuthUser(result.user);
+    } catch (error) {
+      console.error("Google sign-in failed", error);
+      throw new Error("Google sign-in failed");
+    }
+  }
+
+  async signInWithGoogleRedirect(): Promise<AuthUser | null> {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithRedirect(this.auth, provider);
+      return null; // Redirect will handle the sign-in process
+    } catch (error) {
+      console.error("Google sign-in redirect failed", error);
+      throw new Error("Google sign-in redirect failed");
+    }
+  }
+
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void {
+    return onAuthStateChanged(this.auth, (firebaseUser) => {
+      if (firebaseUser) {
+        this.toAuthUser(firebaseUser).then(callback);
+      } else {
+        callback(null);
+      }
+    });
+  }
+
   async checkAuthStatus(): Promise<AuthUser | null> {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged((currentUser) => {
@@ -42,16 +75,6 @@ export default class FirebaseAuthGateway implements IAuthGateway {
         }
       });
     });
-  }
-
-  async signInWithGoogle(): Promise<AuthUser | null> {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(this.auth, provider);
-      return this.toAuthUser(result.user);
-    } catch (error) {
-      throw new Error("Google sign-in failed");
-    }
   }
 
   async signOut(): Promise<void> {

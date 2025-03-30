@@ -15,7 +15,9 @@ import { SYMBOLS } from "../symbols";
 const authModule = new ContainerModule((bind) => {
   // infra layer
   bind<IAuthApiGateway>(SYMBOLS.IAuthApiGateway).to(AuthApi);
-  bind<IAuthGateway>(SYMBOLS.IAuthGateway).to(FirebaseAuthGateway);
+  bind<IAuthGateway>(SYMBOLS.IAuthGateway)
+    .to(FirebaseAuthGateway)
+    .inSingletonScope();
 
   // data layer
   bind<IAuthRepository>(SYMBOLS.IAuthRepository).to(AuthRepository);

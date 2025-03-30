@@ -4,23 +4,19 @@ import { login, logout } from "../store/auth.slice";
 import { container } from "@/app/common/di/container";
 import IAuthService from "../../domain/interfaces/auth.service.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
+import { AuthUser } from "../../domain/entities/auth-user.entity";
 
 const useAuth = () => {
   const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state: any) => state.auth);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const restoreSignIn = async () => {
-    console.log("restore sign in called");
+  const exchangeAndSaveToken = async (authUser: AuthUser) => {
     setLoading(true);
     try {
-      const currentUser = await authService.restoreLogin();
-      console.log(JSON.stringify(currentUser));
-      if (currentUser) dispatch(login(currentUser));
+      await authService.exchangeAndSaveToken(authUser.authToken);
     } catch (error) {
-      signOut();
-      console.error("Error during Google sign-in:", error);
     } finally {
       setLoading(false);
     }
@@ -50,13 +46,20 @@ const useAuth = () => {
     }
   };
 
+  const listenToAuthStateChange = (
+    callback: (user: AuthUser | null) => void
+  ) => {
+    return authService.onAuthStateChanged(callback);
+  };
+
   return {
     isLoggedIn,
     user,
     loading,
+    listenToAuthStateChange,
     signIn,
     signOut,
-    restoreSignIn,
+    exchangeAndSaveToken,
   };
 };
 

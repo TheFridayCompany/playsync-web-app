@@ -4,7 +4,6 @@ import IProfileService from "../../domain/interfaces/profile.service.interface";
 import { SYMBOLS } from "@/app/common/di/symbols";
 import { setLoading, setProfile } from "../store/profile.slice";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import useAuth from "@/app/features/auth/presentation/hooks/useAuth";
 
 /**
@@ -21,15 +20,12 @@ export function useProfile() {
   const { profile, isLoading } = useSelector((state: any) => state.profile);
   const { signOut } = useAuth();
 
-  useEffect(() => {
-    if (!isLoading && profile) router.replace("/home");
-  }, [profile, isLoading]);
-
   /**
    * Checks if a user profile exists.
    * If it does, fetches and sets the profile; otherwise, redirects to onboarding.
    */
   const checkAndSetProfile = async () => {
+    console.log("check and set profile called");
     try {
       dispatch(setLoading(true));
       const userProfile = await profileService.getProfile();
@@ -42,6 +38,9 @@ export function useProfile() {
             name: userProfile.name,
           })
         );
+        router.replace("/home");
+      } else {
+        throw new Error("No profile found");
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -75,5 +74,6 @@ export function useProfile() {
     createProfile,
     profile,
     isLoggedIn,
+    isLoading,
   };
 }

@@ -6,11 +6,18 @@ import { AuthUser } from "../../domain/entities/auth-user.entity";
  */
 export default interface IAuthGateway {
   /**
-   * Signs in the user using Google authentication.
+   * Signs in the user using Google authentication (popup method).
    *
    * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if sign-in is successful, or `null` if it fails.
    */
-  signInWithGoogle(): Promise<AuthUser | null>;
+  signInWithGooglePopup(): Promise<AuthUser | null>;
+
+  /**
+   * Signs in the user using Google authentication (redirect method).
+   *
+   * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if sign-in is successful, or `null` if it fails.
+   */
+  signInWithGoogleRedirect(): Promise<AuthUser | null>;
 
   /**
    * Checks the current authentication status of the user.
@@ -25,4 +32,12 @@ export default interface IAuthGateway {
    * @returns {Promise<void>} - A promise that resolves when the sign-out process is complete.
    */
   signOut(): Promise<void>;
+
+  /**
+   * Subscribes to authentication state changes.
+   *
+   * @param callback - A function that receives an `AuthUser` object when the authentication state changes.
+   * @returns {() => void} - A function to unsubscribe from authentication state changes.
+   */
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void;
 }

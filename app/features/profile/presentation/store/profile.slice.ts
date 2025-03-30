@@ -9,7 +9,7 @@ interface ProfileState {
 
 const initialState: ProfileState = {
   profile: null,
-  isLoading: true,
+  isLoading: false,
 };
 
 // Create the auth slice

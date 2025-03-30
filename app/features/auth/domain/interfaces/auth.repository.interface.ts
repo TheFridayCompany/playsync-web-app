@@ -33,4 +33,12 @@ export default interface IAuthRepository {
    * @returns {Promise<void>} - A promise that resolves when the sign-out process is complete.
    */
   signOut(): Promise<void>;
+
+  /**
+   * Subscribes to authentication state changes.
+   *
+   * @param callback - A function that receives an `AuthUser` object when the authentication state changes.
+   * @returns {() => void} - A function to unsubscribe from authentication state changes.
+   */
+  onAuthStateChanged(callback: (user: AuthUser | null) => void): () => void;
 }
