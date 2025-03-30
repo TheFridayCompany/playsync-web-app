@@ -25,7 +25,13 @@ export default class AuthRepository implements IAuthRepository {
   }
 
   async signInWithGoogle(): Promise<AuthUser | null> {
-    return this.authGateway.signInWithGoogle();
+    const isMobile = true; // TODO: Detect if the user is on mobile
+
+    if (isMobile) {
+      return this.authGateway.signInWithGoogleRedirect();
+    }
+
+    return this.authGateway.signInWithGooglePopup();
   }
 
   async signOut(): Promise<void> {

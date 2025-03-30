@@ -6,11 +6,18 @@ import { AuthUser } from "../../domain/entities/auth-user.entity";
  */
 export default interface IAuthGateway {
   /**
-   * Signs in the user using Google authentication.
+   * Signs in the user using Google authentication (popup method).
    *
    * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if sign-in is successful, or `null` if it fails.
    */
-  signInWithGoogle(): Promise<AuthUser | null>;
+  signInWithGooglePopup(): Promise<AuthUser | null>;
+
+  /**
+   * Signs in the user using Google authentication (redirect method).
+   *
+   * @returns {Promise<AuthUser | null>} - A promise that resolves to an `AuthUser` object if sign-in is successful, or `null` if it fails.
+   */
+  signInWithGoogleRedirect(): Promise<AuthUser | null>;
 
   /**
    * Checks the current authentication status of the user.
