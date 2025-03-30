@@ -26,7 +26,9 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
         console.log("User is logged in:", user);
         console.log("before checking and setting profile");
         exchangeAndSaveToken(user).then(() => {
-          checkAndSetProfile();
+          checkAndSetProfile().catch((error) => {
+            router.push("/login");
+          });
         });
       }
     });
